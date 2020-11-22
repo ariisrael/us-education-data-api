@@ -1,5 +1,5 @@
 from config import url
-from requests import get
+from utils import getPaginatedResults
 
 url = url.format(topic='school-districts')
 path = '/{source}/{endpoint}/{year}'
@@ -13,11 +13,7 @@ class CCD:
         if not year:
             return False
         directory_url = url + path.format(source=CCD.source, endpoint=endpoint, year=year)
-        r = get(directory_url)
-        results = r.json()["results"]
-        while r.json()["next"]:
-            r = get(r.json()["next"])
-            results.extend(r.json()["results"])
+        results = getPaginatedResults(directory_url)
         return results
 
     @staticmethod
@@ -36,11 +32,7 @@ class CCD:
             enrollment_url += '?'
             for key, value in filters.items():
                 enrollment_url += key + '=' + str(value) + '&'
-        r = get(enrollment_url)
-        results = r.json()["results"]
-        while r.json()["next"]:
-            r = get(r.json()["next"])
-            results.extend(r.json()["results"])
+        results = getPaginatedResults(enrollment_url)
         return results
 
     @staticmethod
@@ -53,11 +45,7 @@ class CCD:
             finance_url += '?'
             for key, value in filters.items():
                 finance_url += key + '=' + str(value) + '&'
-        r = get(finance_url)
-        results = r.json()["results"]
-        while r.json()["next"]:
-            r = get(r.json()["next"])
-            results.extend(r.json()["results"])
+        results = getPaginatedResults(finance_url)
         return results
 
 class SAIPE:
@@ -71,11 +59,7 @@ class SAIPE:
             saipe_url += '?'
             for key, value in filters.items():
                 saipe_url += key + '=' + str(value) + '&'
-        r = get(saipe_url)
-        results = r.json()["results"]
-        while r.json()["next"]:
-            r = get(r.json()["next"])
-            results.extend(r.json()["results"])
+        results = getPaginatedResults(saipe_url)
         return results
 
 class EDFacts: 
@@ -99,9 +83,5 @@ class EDFacts:
             assessments_url += '?'
             for key, value in filters.items():
                 assessments_url += key + '=' + str(value) + '&'
-        r = get(assessments_url)
-        results = r.json()["results"]
-        while r.json()["next"]:
-            r = get(r.json()["next"])
-            results.extend(r.json()["results"])
+        results = getPaginatedResults(assessments_url)
         return results
