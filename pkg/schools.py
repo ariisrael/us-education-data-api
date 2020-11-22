@@ -114,6 +114,3 @@ class NHGIS:
         file = 'census-' + census_year
         url = NHGIS.url().endpoint(file).year(year).filters(filters)
         return getPaginatedResults(url)
-
-
-print(CRDC.enrollment(year=2016, filters={"fips": 1}))
