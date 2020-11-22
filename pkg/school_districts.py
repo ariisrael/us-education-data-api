@@ -14,7 +14,11 @@ class CCD:
             return False
         directory_url = url + path.format(source=CCD.source, endpoint=endpoint, year=year)
         r = get(directory_url)
-        return r.json()
+        results = r.json()["results"]
+        while r.json()["next"]:
+            r = get(r.json()["next"])
+            results.extend(r.json()["results"])
+        return results
 
     @staticmethod
     def enrollment(year, grade, disaggregations=[], filters={}):
@@ -33,7 +37,11 @@ class CCD:
             for key, value in filters.items():
                 enrollment_url += key + '=' + str(value) + '&'
         r = get(enrollment_url)
-        return r.json()
+        results = r.json()["results"]
+        while r.json()["next"]:
+            r = get(r.json()["next"])
+            results.extend(r.json()["results"])
+        return results
 
     @staticmethod
     def finance(year, filters={}):
@@ -46,7 +54,11 @@ class CCD:
             for key, value in filters.items():
                 finance_url += key + '=' + str(value) + '&'
         r = get(finance_url)
-        return r.json()
+        results = r.json()["results"]
+        while r.json()["next"]:
+            r = get(r.json()["next"])
+            results.extend(r.json()["results"])
+        return results
 
 class SAIPE:
 
@@ -59,8 +71,12 @@ class SAIPE:
             saipe_url += '?'
             for key, value in filters.items():
                 saipe_url += key + '=' + str(value) + '&'
-        r. get(saipe_url)
-        return r.json()
+        r = get(saipe_url)
+        results = r.json()["results"]
+        while r.json()["next"]:
+            r = get(r.json()["next"])
+            results.extend(r.json()["results"])
+        return results
 
 class EDFacts: 
     source = 'edfacts'
@@ -84,4 +100,8 @@ class EDFacts:
             for key, value in filters.items():
                 assessments_url += key + '=' + str(value) + '&'
         r = get(assessments_url)
-        return r.json()
+        results = r.json()["results"]
+        while r.json()["next"]:
+            r = get(r.json()["next"])
+            results.extend(r.json()["results"])
+        return results
