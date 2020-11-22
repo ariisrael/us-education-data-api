@@ -1,2 +1,4 @@
 config.json
 dist/
+__pycache__/
+*.pyc
