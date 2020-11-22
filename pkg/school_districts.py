@@ -1,87 +1,54 @@
-from config import url
-from utils import getPaginatedResults
+from utils import Url, getPaginatedResults
 
-url = url.format(topic='school-districts')
-path = '/{source}/{endpoint}/{year}'
+def url():
+    return Url().topic('school-districts')
 
 class CCD:
-    source = 'ccd'
+    @staticmethod
+    def url():
+        return url().source('ccd')
 
     @staticmethod
-    def directory(year):
-        endpoint = 'directory'
+    def directory(year, filters={}):
         if not year:
             return False
-        directory_url = url + path.format(source=CCD.source, endpoint=endpoint, year=year)
-        results = getPaginatedResults(directory_url)
-        return results
+        url = CCD.url().endpoint('directory').year(year).filters(filters)
+        return getPaginatedResults(url)
 
     @staticmethod
     def enrollment(year, grade, disaggregations=[], filters={}):
-        endpoint = 'enrollment'
         if not year or not grade:
             return False
-        enrollment_path = path.format(source=CCD.source, endpoint=endpoint, year=year) + '/grade-{grade}'
-        enrollment_url = url + enrollment_path.format(grade=grade)
-        if disaggregations:
-            if 'race' in disaggregations:
-                enrollment_url += '/race'
-            if 'sex' in disaggregations:
-                enrollment_url += '/sex'
-        if filters: 
-            enrollment_url += '?'
-            for key, value in filters.items():
-                enrollment_url += key + '=' + str(value) + '&'
-        results = getPaginatedResults(enrollment_url)
-        return results
+        url = CCD.url().endpoint('enrollment').year(year).grade(grade).disaggregations(disaggregations).filters(filters)
+        return getPaginatedResults(url)
 
     @staticmethod
     def finance(year, filters={}):
-        endpoint = 'finance'
         if not year:
             return False
-        finance_url = url + path.format(source=CCD.source, endpoint=endpoint, year=year)
-        if filters: 
-            finance_url += '?'
-            for key, value in filters.items():
-                finance_url += key + '=' + str(value) + '&'
-        results = getPaginatedResults(finance_url)
-        return results
+        url = CCD.url().endpoint('finance').year(year).filters(filters)
+        return getPaginatedResults(url)
 
 class SAIPE:
+    @staticmethod
+    def url():
+        return url().source('saipe')
 
     @staticmethod
     def poverty_estimates(year, filters={}):
         if not year:
             return
-        saipe_url = url + '/saipe/' + year
-        if filters:
-            saipe_url += '?'
-            for key, value in filters.items():
-                saipe_url += key + '=' + str(value) + '&'
-        results = getPaginatedResults(saipe_url)
-        return results
+        url = SAIPE.url().year(year).filters(filters)
+        return getPaginatedResults(url)
 
 class EDFacts: 
-    source = 'edfacts'
+    @staticmethod
+    def url():
+        return url().source('edfacts')
 
     @staticmethod
     def state_assessments(year, grade, disaggregations=[], filters={}):
-        endpoint = 'assessments'
         if not year or not grade:
             return False
-        assessments_path = path.format(source=EDFacts.source, endpoint=endpoint, year=year) + '/grade-{grade}'
-        assessments_url = url + assessments_path.format(grade=grade)
-        if disaggregations:
-            if 'race' in disaggregations:
-                assessments_url += '/race'
-            if 'sex' in disaggregations:
-                assessments_url += '/sex'
-            if 'special-populations' in disaggregations:
-                assessments_url += '/special-populations'
-        if filters: 
-            assessments_url += '?'
-            for key, value in filters.items():
-                assessments_url += key + '=' + str(value) + '&'
-        results = getPaginatedResults(assessments_url)
-        return results
+        url = EDFacts.url().endpoint('assessments').year(year).grade(grade).disaggregations(disaggregations).filters(filters)
+        return getPaginatedResults(url)
