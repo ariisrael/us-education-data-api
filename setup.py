@@ -4,11 +4,11 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="urban-institute-us-education-data-api",
+    name="us-school-data-api",
     version="0.0.1",
     author="Ari Israel",
     author_email="ari@ariisrael.com",
-    description="Python wrapper for the Urban Institute Education Data API",
+    description="Python wrapper for the Urban Institute School and School Districts API",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ariisrael/us-education-data-api",
@@ -19,5 +19,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    keywords=['united states', 'education data', 'urban institute', 'api wrapper']
+    keywords=['united states', 'education data', 'urban institute', 'api wrapper', 'schools', 'school districts']
 )
