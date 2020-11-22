@@ -1,7 +1,7 @@
 from utils import Url, getPaginatedResults
 
 def url():
-    return Url().topic('school')
+    return Url().topic('schools')
 
 class CCD:
     @staticmethod
@@ -34,14 +34,15 @@ class CRDC:
     
     @staticmethod
     def enrollment(year, disaggregations=['race', 'sex'], filters={}):
-        if disaggregations.length < 2:
+        if len(disaggregations) < 2:
             return False
         url = CRDC.url().endpoint('enrollment').year(year).disaggregations(disaggregations).filters(filters)
+        print(url)
         return getPaginatedResults(url)
 
     @staticmethod
     def discipline(year, disaggregations=['race', 'sex'], filters={}):
-        if disaggregations.length < 2:
+        if len(disaggregations) < 2:
             return false
         url = CRDC.url().endpoint('discipline').year(year).disaggregations(disaggregations).filters(filters)
         return getPaginatedResults(url)
@@ -53,7 +54,7 @@ class CRDC:
     
     @staticmethod
     def harassment_or_bullying(year, disaggregations=['race', 'sex'], filters={}):
-        if disaggregations.length < 2:
+        if len(disaggregations) < 2:
             return False
         url = CRDC.url().endpoint('harassment-or-bullying').year(year).disaggregations(disaggregations).filters(filters)
         return getPaginatedResults(url)
@@ -65,7 +66,7 @@ class CRDC:
 
     @staticmethod
     def ap_ib_enrollment(year, disaggregations=['race', 'sex'], filters={}):
-        if disaggregations.length < 2:
+        if len(disaggregations) < 2:
             return false
         url = CRDC.url().endpoint('ap_ib_enrollment').year(year).disaggregations(disaggregations).filters(filters)
 
@@ -80,15 +81,15 @@ class CRDC:
         return getPaginatedResults(url)
 
     @staticmethod
-    def ap_exams(year, disaggregations=['race', 'sex'], filters={})
-        if disaggregations.length < 2:
+    def ap_exams(year, disaggregations=['race', 'sex'], filters={}):
+        if len(disaggregations) < 2:
             return False
         url = CRDC.url().endpoint('ap-exams').year(year).disaggregations(disaggregations).filters(filters)
         return getPaginatedResults(url)
     
     @staticmethod
     def sat_act_participation(year, disaggregations=['race', 'sex'], filters={}):
-        if disaggregations.length < 2:
+        if len(disaggregations) < 2:
             return False
         url = CRDC.url().endpoint('sat-act-participation').year(year).disaggregations(disaggregations).filters(filters)
         return getPaginatedResults(url)
@@ -115,4 +116,4 @@ class NHGIS:
         return getPaginatedResults(url)
 
 
-
+print(CRDC.enrollment(year=2016, filters={"fips": 1}))
